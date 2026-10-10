@@ -1,0 +1,6 @@
+{
+  "name": "تعلم مع جنات",
+  "description": "تطبيق أسئلة وأجوبة ونماذج امتحانات متوقعة للصف الأول الإعدادي وفق المنهج المصري بألوان الطيف المبهجة",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
