@@ -76,6 +76,7 @@ fun AppSettingsDialog(
 
     var showGovSubDialog by remember { mutableStateOf(false) }
     var showSecurityLicenseModal by remember { mutableStateOf(false) }
+    var showDownloadApkModal by remember { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -520,6 +521,66 @@ fun AppSettingsDialog(
                         }
                     }
                 }
+
+                // Section: تحميل وتثبيت التطبيق على الموبايل (APK)
+                Card(
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF0FDF4)),
+                    border = BorderStroke(1.2.dp, RainbowGreen),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(14.dp))
+                        .clickable { showDownloadApkModal = true }
+                        .testTag("download_apk_settings_btn")
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(34.dp)
+                                    .clip(CircleShape)
+                                    .background(RainbowGreen),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(text = "📲", fontSize = 18.sp)
+                            }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text(
+                                    text = "تثبيت التطبيق على الموبايل (APK)",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.5.sp,
+                                    color = Color(0xFF0F172A)
+                                )
+                                Text(
+                                    text = "خطوات تنزيل ملف APK المباشر لهاتفك",
+                                    fontSize = 10.5.sp,
+                                    color = Color(0xFF047857)
+                                )
+                            }
+                        }
+
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = RainbowGreen
+                        ) {
+                            Text(
+                                text = "تحميل 📥",
+                                fontSize = 11.5.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
+                    }
+                }
             }
         },
         confirmButton = {
@@ -601,6 +662,12 @@ fun AppSettingsDialog(
         SecurityLicenseDialog(
             viewModel = viewModel,
             onDismiss = { showSecurityLicenseModal = false }
+        )
+    }
+
+    if (showDownloadApkModal) {
+        DownloadApkDialog(
+            onDismiss = { showDownloadApkModal = false }
         )
     }
 }

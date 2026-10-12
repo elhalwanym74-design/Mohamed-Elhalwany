@@ -34,6 +34,9 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.example.ui.viewmodel.JannatViewModel
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.ChevronLeft
@@ -60,6 +63,7 @@ import androidx.compose.ui.unit.sp
 import com.example.R
 import com.example.data.model.Subject
 import com.example.data.repository.QuestionBank
+import com.example.ui.components.DownloadApkDialog
 import com.example.ui.components.JannatTipBox
 import com.example.ui.theme.RainbowCyan
 import com.example.ui.theme.RainbowGreen
@@ -87,6 +91,7 @@ fun HomeScreen(
     val currentUser by viewModel.currentUser.collectAsState()
     val isLoggedIn by viewModel.isLoggedIn.collectAsState()
     val announcement by viewModel.announcement.collectAsState()
+    var showDownloadDialog by remember { mutableStateOf(false) }
 
     LazyColumn(
         modifier = modifier
@@ -173,6 +178,68 @@ fun HomeScreen(
                                 fontWeight = FontWeight.Bold
                             )
                         }
+                    }
+                }
+            }
+        }
+
+        // Direct Download APK Bar
+        item {
+            Card(
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFF0FDF4)),
+                border = BorderStroke(1.2.dp, RainbowGreen),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .clickable { showDownloadDialog = true }
+                    .testTag("home_download_apk_banner")
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 9.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(34.dp)
+                                .clip(CircleShape)
+                                .background(RainbowGreen),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "📲", fontSize = 18.sp)
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text(
+                                text = "تحميل وتثبيت التطبيق على الموبايل (APK)",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp,
+                                color = Color(0xFF0F172A)
+                            )
+                            Text(
+                                text = "اضغط هنا لمعرفة خطوات تنزيل ملف APK المباشر لهاتفك",
+                                fontSize = 10.5.sp,
+                                color = Color(0xFF047857)
+                            )
+                        }
+                    }
+
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = RainbowGreen
+                    ) {
+                        Text(
+                            text = "تحميل 📥",
+                            fontSize = 11.5.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+                        )
                     }
                 }
             }
@@ -939,6 +1006,10 @@ fun HomeScreen(
                 )
             }
         }
+    }
+
+    if (showDownloadDialog) {
+        DownloadApkDialog(onDismiss = { showDownloadDialog = false })
     }
 }
 
